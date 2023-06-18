@@ -16,7 +16,7 @@
     - solução encontrada na literatura: 52
     - solução encontrada ao executar o código: 
 
-- 5: tamanho do maximal independent set para 1024 vértices / 1024 arestas
+- 5: tamanho do maximal independent set para 1024 vértices / 24063 arestas
     - solução encontrada na literatura: 94
     - solução encontrada ao executar o código: 
     
