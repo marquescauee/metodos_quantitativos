@@ -1,6 +1,7 @@
 import random
 
-for i in range(1, 30):
+#Selecionando apenas as instâncias ímpares (step 2)
+for i in range(1, 30, 2):
 
     #Função que gera o grafo
     def build_graph_from_file(file_path):
