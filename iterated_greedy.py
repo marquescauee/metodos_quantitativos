@@ -23,10 +23,10 @@ for i in range(1, 30, 2):
     graph = build_graph_from_file(file_path)
 
     #Algoritmo Iterated Greedy
-    def iterated_greedy(iterations):
+    def iterated_greedy(max_iterations):
         best_set = set()
         best_size = 0
-        for _ in range(iterations):
+        for _ in range(max_iterations):
             graph = build_graph_from_file(file_path)
 
             independent_set = set()
