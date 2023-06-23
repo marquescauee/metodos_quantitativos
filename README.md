@@ -86,7 +86,7 @@
 - 29: tamanho do maximal independent set para 4096 vértices / 184320 arestas
     - solução encontrada na literatura: 379
 
-## Soluções Encontradas para o Algoritmo Guloso (limite de 1000 iterações) (~1m 5s execução)
+## Soluções Encontradas para o Algoritmo Semi-Guloso (limite de 10000 iterações)
 
 - 1: 
 
