@@ -1,7 +1,7 @@
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30, 2):
+for i in range(1, 30):
 
     #Função que gera o grafo
     def build_graph_from_file(file_path):
@@ -20,20 +20,21 @@ for i in range(1, 30, 2):
         return graph
 
     file_path = './'+str(i)+'/result'+str(i)+'.txt'
+    graph = build_graph_from_file(file_path)
+
   
-    #Algoritmo Semi-Greedy
-    def iterated_greedy(iterations, k):
+    #Algoritmo Greedy
+    def iterated_greedy(iterations):
         graph = build_graph_from_file(file_path)
         best_set = set()
-        best_size = 0 
+        best_size = 0
         for _ in range(iterations):
             independent_set = set()
             vertices = sorted(graph, key = graph.get)
             while vertices:
-                partial_vertices = int(len(vertices) * (k/100) + 1)
-                vertices = vertices[:partial_vertices]
-
-                v = random.choice(vertices)
+                v = vertices[0] 
+                #guloso: pega sempre o vértice do índice 0 (menor grau) (vertices ordenado pelo grau [não decrescente])
+                #semi-guloso: pega aleatoriamente um dos vértices entre os índices 0 e ceil(k*n/100) - 1
 
                 independent_set.add(v)
                 vertices.remove(v)
@@ -52,8 +53,5 @@ for i in range(1, 30, 2):
     #Número de iterações
     max_iterations = 10000
 
-    #Porcentagem de candidatos
-    k = 90
-
-    solution = iterated_greedy(max_iterations, k)
+    solution = iterated_greedy(max_iterations)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
