@@ -22,26 +22,28 @@ for i in range(1, 30, 2):
     file_path = './'+str(i)+'/result'+str(i)+'.txt'
   
     #Algoritmo Semi-Greedy
-    def iterated_greedy(iterations, k):
+    def semi_greedy(iterations, k):
         graph = build_graph_from_file(file_path)
         best_set = set()
         best_size = 0 
+        sorted_candidates = sorted(graph.items(), key=lambda x: len(x[1]))
+        sorted_candidates = dict(sorted_candidates)
         for _ in range(iterations):
+            candidates = list(sorted_candidates)
             independent_set = set()
-            vertices = sorted(graph, key = graph.get)
-            while vertices:
-                partial_vertices = int(len(vertices) * (k/100) + 1)
-                vertices = vertices[:partial_vertices]
+            while candidates:
+                partial_candidates = int(len(candidates) * (k/100) + 1)
+                candidates = candidates[:partial_candidates]
 
-                v = random.choice(vertices)
+                chosen_vertice = random.choice(candidates)
 
-                independent_set.add(v)
-                vertices.remove(v)
+                independent_set.add(chosen_vertice)
+                candidates.remove(chosen_vertice)
                 
-                for value in graph[v]:
-                    if value in vertices:
-                        vertices.remove(value) 
-                graph.pop(v)
+                for neighbor in graph[chosen_vertice]:
+                    if neighbor in candidates:
+                        candidates.remove(neighbor) 
+               
 
             independent_size = len(independent_set)
             if independent_size > best_size:
@@ -50,10 +52,10 @@ for i in range(1, 30, 2):
         return best_set
 
     #Número de iterações
-    max_iterations = 10000
+    max_iterations = 1000
 
     #Porcentagem de candidatos
-    k = 90
+    k = 100
 
-    solution = iterated_greedy(max_iterations, k)
+    solution = semi_greedy(max_iterations, k)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
