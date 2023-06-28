@@ -24,8 +24,8 @@ for i in range(1, 30, 2):
     #Algoritmo Semi-Greedy
     def semi_greedy(iterations, k):
         graph = build_graph_from_file(file_path)
-        best_set = set()
-        best_size = 0 
+        best_independent_set = set()
+        best_independent_size = 0 
         sorted_candidates = sorted(graph.items(), key=lambda x: len(x[1]))
         sorted_candidates = dict(sorted_candidates)
         for _ in range(iterations):
@@ -46,13 +46,13 @@ for i in range(1, 30, 2):
                
 
             independent_size = len(independent_set)
-            if independent_size > best_size:
-                best_set =  independent_set
-                best_size = independent_size
-        return best_set
+            if independent_size > best_independent_size:
+                best_independent_set =  independent_set
+                best_independent_size = independent_size
+        return best_independent_set
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 10000
 
     #Porcentagem de candidatos
     k = 100
