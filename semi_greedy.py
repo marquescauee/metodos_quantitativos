@@ -1,4 +1,3 @@
-import copy
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
@@ -38,9 +37,6 @@ for i in range(1, 30, 2):
 
         #inicio das iterações
         for _ in range(iterations):
-            #cópia do grafo (necessário reiniciar o grafo a cada nova iteração/tentativa)
-            new_graph_instance = copy.deepcopy(graph)
-
             #cópia da lista ordenada de candidatos em forma de lista (necessário para não apontarem para o mesmo endereço de memória)
             candidates = list(sorted_candidates)
 
@@ -66,7 +62,7 @@ for i in range(1, 30, 2):
                 candidates.remove(chosen_vertice)
                 
                 #cada vizinho (valor) do vértice escolhido (chave) também é removido da lista de candidatos
-                for neighbor in new_graph_instance[chosen_vertice]:
+                for neighbor in graph[chosen_vertice]:
                     if neighbor in candidates:
                         candidates.remove(neighbor) 
                
