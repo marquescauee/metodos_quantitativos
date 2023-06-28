@@ -1,4 +1,3 @@
-import copy
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
@@ -21,7 +20,7 @@ for i in range(1, 30, 2):
         return graph
 
     file_path = './'+str(i)+'/result'+str(i)+'.txt'
-    graph = build_graph_from_file(file_path)
+    
 
     #Algoritmo Iterated Greedy
     def iterated_greedy(max_iterations, d):
@@ -29,6 +28,8 @@ for i in range(1, 30, 2):
         best_independent_set = set()
         best_independent_size = 0
         
+        graph = build_graph_from_file(file_path)
+
         #ordenando o grafo do vértice de menor ordem para o de maior
         #forma de ordenação: função lambda recebe um parâmetro x (chave/vértice do dicionário/grafo) e retorna o comprimento do array de valores
         sorted_candidates = sorted(graph.items(), key=lambda x: len(x[1]))
@@ -38,8 +39,9 @@ for i in range(1, 30, 2):
 
         #inicio das iterações
         for _ in range(max_iterations):
-            #cópia do grafo (necessário reiniciar o grafo a cada nova iteração/tentativa)
-            new_graph_instance = copy.deepcopy(graph)
+
+            #necessário recriar o grafo a cada iteração, pois este é modificado com a destruição
+            graph = build_graph_from_file(file_path)
 
             #cópia da lista ordenada de candidatos em forma de lista (necessário para não apontarem para o mesmo endereço de memória)
             candidates = list(sorted_candidates)
@@ -52,23 +54,36 @@ for i in range(1, 30, 2):
 
             #iterando sobre cada vértice a ser destruído
             for i in range(vertices_to_be_destroyed):
-                #iterando sobre os valores (vizinhos) de cada chave (vértice) a ser destruído
-                for j in range(len(new_graph_instance.get(candidates[i]))):
+
+                #pegando o vertice atual que está sendo iterado
+                current_vertice = candidates[i]
+
+                #iterando sobre os valores (vizinhos) a serem destruidos de cada chave (vértice) 
+                for j in range(len(graph.get(current_vertice))):
                     
                     #seleciona um vértice aleatório do conjunto de candidatos
                     new_neighbor = random.choice(candidates)
 
                     #se o new_neighbor já é um vizinho ou se o new_neighbor é o próprio vértice que está sendo iterado, gera um novo new_neighbor 
-                    while(new_neighbor in new_graph_instance.get(candidates[i]) or new_neighbor == candidates[i]):
+                    while(new_neighbor in graph.get(candidates[i]) or new_neighbor == candidates[i]):
                         new_neighbor = random.choice(candidates)
                     
-                    #destruição do vizinho antigo e atribuição de um novo vizinho
-                    new_graph_instance.get(candidates[i])[j] = new_neighbor
+                    #vizinho que será removido
+                    neighbor_to_be_removed = graph.get(candidates[i])[j]
                     
+                    #destruição do vizinho antigo e atribuição de um novo vizinho
+                    graph.get(candidates[i])[j] = new_neighbor
+    
+                    #adicionando vértice atual como vizinho do new_neighbor
+                    graph[new_neighbor].append(current_vertice)
+
+                    #remover vertice atual da vizinha de neighbor_to_be_removed
+                    graph[neighbor_to_be_removed].remove(current_vertice)
+    
             while candidates:
                     #enquanto houver candidatos, pega sempre o primeiro (de menor grau)
                     chosen_vertice = candidates[0]
-
+    
                     #adiciona o vertice escolhido ao conjunto independente máximo atual
                     current_independent_set.add(chosen_vertice)
 
@@ -76,9 +91,9 @@ for i in range(1, 30, 2):
                     candidates.remove(chosen_vertice)
                     
                     #cada vizinho (valor) do vértice escolhido (chave) também é removido da lista de candidatos
-                    for neighbor in new_graph_instance[chosen_vertice]:
+                    for neighbor in graph[chosen_vertice]:
                         if neighbor in candidates:
-                            candidates.remove(neighbor) 
+                            candidates.remove(neighbor)
 
             #se o tamanho do conjunto independente máximo atual é maior que o melhor encontrado até o momento, substitui
             independent_size = len(current_independent_set)
@@ -88,7 +103,7 @@ for i in range(1, 30, 2):
         return best_independent_set
 
     #Número de iterações
-    max_iterations = 10
+    max_iterations = 1000
 
     #taxa de destruição
     d = 20
