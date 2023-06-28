@@ -45,12 +45,10 @@ for i in range(1, 30, 2):
 
             #definição da quantidade de candidatos a serem reatribuídos na lista
             partial_candidates = int(len(candidates) * (k/100) + 1)
+            candidates = candidates[:partial_candidates]
 
-            #enquanto houver candidatos, seleciona uma porcentagem dos candidatos e reatribui na lista original
-            while candidates:
-
-                #reatribuição do array
-                candidates = candidates[:partial_candidates]
+            #enquanto houver candidatos, seleciona o de menor grau para compor o conjunto independente máximo
+            while candidates:       
 
                 #seleção aleatória do percentual de candidatos
                 chosen_vertice = random.choice(candidates)
