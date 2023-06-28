@@ -43,11 +43,11 @@ for i in range(1, 30, 2):
             #melhor conjunto independente máximo atual
             current_independent_set = set()
 
-            #enquanto houver candidatos, seleciona uma porcentagem dos candidatos e reatribui ao array original
-            while candidates:
+            #definição da quantidade de candidatos a serem reatribuídos na lista
+            partial_candidates = int(len(candidates) * (k/100) + 1)
 
-                #definição da quantidade de candidatos a serem reatribuídos no array
-                partial_candidates = int(len(candidates) * (k/100) + 1)
+            #enquanto houver candidatos, seleciona uma porcentagem dos candidatos e reatribui na lista original
+            while candidates:
 
                 #reatribuição do array
                 candidates = candidates[:partial_candidates]
@@ -77,7 +77,7 @@ for i in range(1, 30, 2):
     max_iterations = 1000
 
     #Porcentagem de candidatos
-    k = 100
+    k = 80
 
     solution = semi_greedy(max_iterations, k)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
