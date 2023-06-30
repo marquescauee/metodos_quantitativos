@@ -43,15 +43,20 @@ for i in range(1, 30, 2):
             #melhor conjunto independente máximo atual
             current_independent_set = set()
 
-            #definição da quantidade de candidatos a serem reatribuídos na lista
-            partial_candidates = int(len(candidates) * (k/100) + 1)
-            candidates = candidates[:partial_candidates]
-
             #enquanto houver candidatos, seleciona o de menor grau para compor o conjunto independente máximo
             while candidates:       
+                #definição da quantidade de candidatos a serem reatribuídos na lista
+                partial_candidates = int(len(candidates) * (k/100) + 1)
+
+                partial_list = list()
+
+                for i in range (partial_candidates):
+                   partial_list.append(candidates[i])
+
+                #candidates = candidates[:partial_candidates]
 
                 #seleção aleatória do percentual de candidatos
-                chosen_vertice = random.choice(candidates)
+                chosen_vertice = random.choice(partial_list)
 
                 #adiciona o vertice escolhido ao conjunto independente máximo atual
                 current_independent_set.add(chosen_vertice)
@@ -75,7 +80,7 @@ for i in range(1, 30, 2):
     max_iterations = 1000
 
     #Porcentagem de candidatos
-    k = 80
+    k = 20
 
     solution = semi_greedy(max_iterations, k)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
