@@ -26,8 +26,8 @@ for i in range(1, 30, 2):
     def greedy(iterations):
         best_set = set()
         best_size = 0
+        
         for _ in range(iterations):
-            graph = build_graph_from_file(file_path)
             independent_set = set()
             vertices = sorted(graph.items(), key=lambda x: len(x[1]))
             vertices = dict(vertices)
@@ -42,7 +42,6 @@ for i in range(1, 30, 2):
                 for value in graph[v]:
                     if value in vertices:
                         vertices.remove(value) 
-                graph.pop(v)
 
             independent_size = len(independent_set)
             if independent_size > best_size:

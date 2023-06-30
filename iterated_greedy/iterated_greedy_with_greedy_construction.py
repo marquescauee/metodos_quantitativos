@@ -20,6 +20,7 @@ for i in range(1, 30, 2):
         return graph
 
     file_path = './'+str(i)+'/result'+str(i)+'.txt'
+    graph = build_graph_from_file(file_path)
     
     def iterated_greedy(max_iterations, d):
         #variáveis que serão usadas para comparação no final da iteração
@@ -27,7 +28,6 @@ for i in range(1, 30, 2):
         best_independent_size = 0
 
         #INÍCIO DA CONSTRUÇÃO DA SOLUÇÃO INICIAL (ALGORITMO GULOSO)
-        graph = build_graph_from_file(file_path)
         independent_set = set()
         vertices = sorted(graph.items(), key=lambda x: len(x[1]))
         vertices = dict(vertices)
@@ -42,13 +42,10 @@ for i in range(1, 30, 2):
             for value in graph[v]:
                 if value in vertices:
                     vertices.remove(value) 
-            graph.pop(v)
+
         best_independent_set = independent_set
         best_independent_size = len(independent_set)
         #FIM DA CONSTRUÇÃO INICIAL
-
-        #gerando o grafo novamente após construção inicial
-        graph = build_graph_from_file(file_path)
 
         #ordenando o grafo do vértice de menor ordem para o de maior
         #forma de ordenação: função lambda recebe um parâmetro x (chave/vértice do dicionário/grafo) e retorna o comprimento do array de valores

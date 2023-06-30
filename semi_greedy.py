@@ -53,8 +53,6 @@ for i in range(1, 30, 2):
                 for i in range (partial_candidates):
                    partial_list.append(candidates[i])
 
-                #candidates = candidates[:partial_candidates]
-
                 #seleção aleatória do vértice na lista de candidatos parciais
                 chosen_vertice = random.choice(partial_list)
 
