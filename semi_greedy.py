@@ -55,7 +55,7 @@ for i in range(1, 30, 2):
 
                 #candidates = candidates[:partial_candidates]
 
-                #seleção aleatória do percentual de candidatos
+                #seleção aleatória do vértice na lista de candidatos parciais
                 chosen_vertice = random.choice(partial_list)
 
                 #adiciona o vertice escolhido ao conjunto independente máximo atual

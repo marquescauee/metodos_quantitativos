@@ -1,8 +1,7 @@
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
-
+for i in range(1, 30, 2):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -24,17 +23,18 @@ for i in range(1, 30):
 
   
     #Algoritmo Greedy
-    def iterated_greedy(iterations):
-        graph = build_graph_from_file(file_path)
+    def greedy(iterations):
         best_set = set()
         best_size = 0
         for _ in range(iterations):
+            graph = build_graph_from_file(file_path)
             independent_set = set()
-            vertices = sorted(graph, key = graph.get)
+            vertices = sorted(graph.items(), key=lambda x: len(x[1]))
+            vertices = dict(vertices)
+            vertices = list(vertices)
+
             while vertices:
-                v = vertices[0] 
-                #guloso: pega sempre o vértice do índice 0 (menor grau) (vertices ordenado pelo grau [não decrescente])
-                #semi-guloso: pega aleatoriamente um dos vértices entre os índices 0 e ceil(k*n/100) - 1
+                v = vertices[0]
 
                 independent_set.add(v)
                 vertices.remove(v)
@@ -51,7 +51,7 @@ for i in range(1, 30):
         return best_set
 
     #Número de iterações
-    max_iterations = 10000
+    max_iterations = 1
 
-    solution = iterated_greedy(max_iterations)
+    solution = greedy(max_iterations)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
