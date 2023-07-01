@@ -124,9 +124,8 @@ for i in range(1, 30, 2):
                 #devolve o vértice removido à solução inicial para que comece uma nova iteração sobre o próximo vértice
                 best_solution.insert(i, removed_vertice)
 
-            #se houver alguma melhoria existente
+            #se houver alguma melhoria existente, pega uma melhoria aleatória
             if(list_of_improvements):
-                #list_of_improvements = list(list_of_improvements)
                 best_solution = random.choice(list_of_improvements)
         return best_solution
 
