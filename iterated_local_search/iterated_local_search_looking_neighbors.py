@@ -1,3 +1,4 @@
+import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
@@ -34,7 +35,7 @@ for i in range(1, 30, 2):
 
         while candidates:       
 
-            partial_candidates = int(len(candidates) * (k/100) + 1)
+            partial_candidates = int(math.ceil(len(candidates) * (k/100)))
             partial_list = list()
 
             for i in range (partial_candidates):

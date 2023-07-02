@@ -35,7 +35,7 @@ for i in range(1, 30):
             current_independent_set = set()
 
             while candidates:       
-                partial_candidates = int(len(candidates) * (k/100) + 1)
+                partial_candidates = int(math.ceil(len(candidates) * (k/100)))
 
                 partial_list = list()
 
