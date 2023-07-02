@@ -1,3 +1,4 @@
+import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
@@ -76,7 +77,7 @@ for i in range(1, 30):
             candidates = list(sorted_candidates)
 
             #definição do número de vértices a serem destruídos
-            vertices_to_be_destroyed = int(len(current_independent_set) * (d/100) + 1)
+            vertices_to_be_destroyed = int(math.ceil(len(current_independent_set) * (d/100)))
 
             #convertendo set pra uma lista
             current_independent_set = list(current_independent_set)
@@ -93,7 +94,7 @@ for i in range(1, 30):
                 current_independent_set.remove(vertice_removed)
                 list_of_candidates.remove(vertice_removed)
 
-            #FASE DE CONSTRUÇÃO (SEMI-GULOSO)
+            #FASE DE RECONSTRUÇÃO (SEMI-GULOSO)
             while list_of_candidates:
 
                 candidate = random.choice(list_of_candidates)
@@ -127,7 +128,7 @@ for i in range(1, 30):
     max_iterations = 5000
 
     #taxa de destruição
-    d = 20
+    d = 30
 
     #execução da solução
     solution = iterated_greedy(max_iterations, d)
