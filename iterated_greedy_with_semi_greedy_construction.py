@@ -81,8 +81,8 @@ for i in range(1, 30):
             #convertendo set pra uma lista
             current_independent_set = list(current_independent_set)
 
-            #vertices removidos
-            vertices_removed = list()
+            #lista de candidatos
+            list_of_candidates = list(graph.keys())
 
             #FASE DE DESTRUIÇÃO
             for _ in range(vertices_to_be_destroyed):
@@ -91,16 +91,18 @@ for i in range(1, 30):
 
                 #removendo do conjunto independente atual
                 current_independent_set.remove(vertice_removed)
+                list_of_candidates.remove(vertice_removed)
 
-                #adicionando na lista de removidos
-                vertices_removed.append(vertice_removed)
+            #FASE DE CONSTRUÇÃO (SEMI-GULOSO)
+            while list_of_candidates:
 
-            #FASE DE CONSTRUÇÃO
-            for candidate in candidates:
+                candidate = random.choice(list_of_candidates)
+
                 #booleano pra verificar se o candidato é vizinho de alguém
                 is_neighbor = False
+
                 #candidato não pode estar no conjunto independente atual e não pode estar na lista de removidos (não queremos reinserir um vértice que acabou de ser removido)
-                if(candidate not in current_independent_set and candidate not in vertices_removed):
+                if(candidate not in current_independent_set):
                     #pra cada vértice no conjunto independente atual
                     for vertice in current_independent_set:
                         #pega todos os vizinhos do vértice da iteração
@@ -112,6 +114,7 @@ for i in range(1, 30):
                     #se a variável is_neighbor for false, então o candidato não é vizinho de ninguém. Adiciona no conjunto
                     if(not is_neighbor):
                         current_independent_set.append(candidate)
+                list_of_candidates.remove(candidate)
 
             #se o tamanho do conjunto independente máximo atual é maior que o melhor encontrado até o momento, substitui
             independent_size = len(current_independent_set)
@@ -121,7 +124,7 @@ for i in range(1, 30):
         return best_independent_set
 
     #Número de iterações
-    max_iterations = 1
+    max_iterations = 5000
 
     #taxa de destruição
     d = 20
