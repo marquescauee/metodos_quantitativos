@@ -1,7 +1,7 @@
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 30, 2):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -57,14 +57,47 @@ for i in range(1, 30):
         return best_independent_set
     ############################# SEMI GULOSO ###############################################################################
   
-    def simple_local_search_random_improvement(initialSolution, max_iterations):
+    def iterated_local_search(initialSolution, max_iterations, perturbation):
         #Solução Atual (Na primeira iteração, a melhor solução é a solução inicial gerada pelo semi-greedy)
         best_solution = list(initialSolution)
 
-        for _ in range(max_iterations):
+        #Variável que guarda a melhor solução anterior
+        last_best_solution = list(best_solution)
+
+        for z in range(max_iterations):
+
             #Lista de melhorias encontradas
             list_of_improvements = list()
 
+            ############################# INICIO DA PERTURBACAO ######################################
+
+            #definição do número de vértices a serem destruídos
+            vertices_to_be_destroyed = int(len(last_best_solution) * (perturbation/100) + 1)
+
+            # #convertendo set pra uma lista
+            # current_independent_set = list(current_independent_set)
+
+            #vertices removidos
+            vertices_removed = list()
+
+            #FASE DE DESTRUIÇÃO
+            for _ in range(vertices_to_be_destroyed):
+                #obtendo vértice a ser removido
+                vertice_removed = random.choice(best_solution)
+
+                #removendo do conjunto independente atual
+                best_solution.remove(vertice_removed)
+
+                #adicionando na lista de removidos
+                vertices_removed.append(vertice_removed)
+
+            ############################## FIM DA PERTURBACAO #############################################
+
+            if(z == 1):
+                #Na primeira iteração, a última melhor solução é a solução perturbada
+                last_best_solution = list(best_solution)
+
+            #INICIO DA BUSCA LOCAL NA SOLUCAO PERTURBADA
             for i in range(len(best_solution)):
 
                 #contador pra verificar se percorreu toda a vizinhança
@@ -80,6 +113,7 @@ for i in range(1, 30):
 
                 #Tenta adicionar vértices da lista de candidatos no conjunto atual
                 for candidate in graph.get(removed_vertice):
+
                     counter_neighbors += 1
 
                     #Boolean para validar se o vértice pode ser adicionado no conjunto atual
@@ -93,7 +127,7 @@ for i in range(1, 30):
 
                     #Para cada vértice que está na melhor solução atual
                     for vertice in best_solution:
-                        #Se o vértice é um vizinho do candidato, então não pode ser adicionado
+                        #Se o vértice é um vizinho do candidato ou se o vértice estiver na lista de removidos pela perturbação, então não pode ser adicionado
                         if (vertice in neighbors_of_current_candidate):
                             can_be_added = False
                             break
@@ -118,7 +152,7 @@ for i in range(1, 30):
                         #best_solution começa valendo 7, mas chega aqui valendo 6, pois removemos um vértice para tentar adicionar mais
                         #se eu só consegui adicionar 1 vértice (len(vertices_added_to_improve_solution) = 1), então não muda nada, pois removi um vértice inicialmente e adicionei outro no lugar dele
                         #se eu consegui adicionar 2 ou mais vértices, então a solução parcial é melhor
-                    if((len(vertices_added_to_improve_solution) + len(best_solution) > len(best_solution) + 1) and counter_neighbors == len(graph.get(removed_vertice))):
+                    if((len(vertices_added_to_improve_solution) + len(best_solution) > len(last_best_solution)) and counter_neighbors == len(graph.get(removed_vertice))):
                         merged_list = vertices_added_to_improve_solution + best_solution
                             
                         #adiciona a merged_list (lista de vértices adicionados + lista da solução inicial) na lista de melhorias
@@ -127,15 +161,22 @@ for i in range(1, 30):
                 #devolve o vértice removido à solução inicial para que comece uma nova iteração sobre o próximo vértice
                 best_solution.insert(i, removed_vertice)
 
-            #se houver alguma melhoria existente, pega uma melhoria aleatória
+            #se houver alguma melhoria existente, pega uma melhoria aleatória, se não, 
             if(list_of_improvements):
                 best_solution = random.choice(list_of_improvements)
+                last_best_solution = list(best_solution)
+            else:
+                best_solution = list(last_best_solution)
+
         return best_solution
 
     #Número de iterações
     max_iterations = 1000
 
+    #Taxa de perturbação
+    perturbation = 20
+
     initialSolution = semi_greedy(20)
 
-    solution = simple_local_search_random_improvement(initialSolution, max_iterations)
+    solution = iterated_local_search(initialSolution, max_iterations, perturbation)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")

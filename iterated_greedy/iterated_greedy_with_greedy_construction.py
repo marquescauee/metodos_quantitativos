@@ -1,7 +1,7 @@
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30, 2):
+for i in range(1, 30):
 
     #Função que gera o grafo
     def build_graph_from_file(file_path):
@@ -109,7 +109,7 @@ for i in range(1, 30, 2):
         return best_independent_set
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 1
 
     #taxa de destruição
     d = 20
