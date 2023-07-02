@@ -1,4 +1,3 @@
-import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
@@ -19,45 +18,45 @@ for i in range(1, 30):
                     graph[vertex2].append(vertex1)
         return graph
 
-    file_path = './'+str(i)+'/result'+str(i)+'.txt'
-    graph = build_graph_from_file(file_path)
+    def semi_greedy(I, k):
 
-    ############################# SEMI GULOSO ###############################################################################
-    def semi_greedy(k):
         best_independent_set = set()
         best_independent_size = 0 
 
         sorted_candidates = sorted(graph.items(), key=lambda x: len(x[1]))
+
         sorted_candidates = dict(sorted_candidates)
-        candidates = list(sorted_candidates)
 
-        current_independent_set = set()
+        for _ in range(I):
 
-        while candidates:       
+            candidates = list(sorted_candidates)
 
-            partial_candidates = int(math.ceil(len(candidates) * (k/100)))
-            partial_list = list()
+            current_independent_set = set()
 
-            for i in range (partial_candidates):
-                partial_list.append(candidates[i])
+            while candidates:       
+                partial_candidates = int(len(candidates) * (k/100) + 1)
 
-            chosen_vertice = random.choice(partial_list)
+                partial_list = list()
 
-            current_independent_set.add(chosen_vertice)
+                for i in range (partial_candidates):
+                   partial_list.append(candidates[i])
 
-            candidates.remove(chosen_vertice)
+                chosen_vertice = random.choice(partial_list)
+
+                current_independent_set.add(chosen_vertice)
+
+                candidates.remove(chosen_vertice)
             
-            for neighbor in graph[chosen_vertice]:
-                if neighbor in candidates:
-                    candidates.remove(neighbor) 
+                for neighbor in graph[chosen_vertice]:
+                    if neighbor in candidates:
+                        candidates.remove(neighbor) 
                
             independent_size = len(current_independent_set)
             if independent_size > best_independent_size:
                 best_independent_set =  current_independent_set
                 best_independent_size = independent_size
         return best_independent_set
-    ############################# SEMI GULOSO ###############################################################################
-  
+    
     def simple_local_search_random_improvement(initialSolution, max_iterations):
         #Solução Atual (Na primeira iteração, a melhor solução é a solução inicial gerada pelo semi-greedy)
         best_solution = list(initialSolution)
@@ -132,11 +131,40 @@ for i in range(1, 30):
             if(list_of_improvements):
                 best_solution = random.choice(list_of_improvements)
         return best_solution
+  
+    def grasp_local_search(max_iterations, I):
+
+        best_solution = list()
+        l = 0
+
+        while(l < max_iterations):
+            
+            semi_greedy_solution = semi_greedy(int(max_iterations * (I/100)), k)
+                
+            if(l == 0):
+                best_solution = list(semi_greedy_solution)
+
+            local_search_solution = simple_local_search_random_improvement(semi_greedy_solution, int(max_iterations * (I/100)))
+        
+            if(len(local_search_solution) > len(best_solution)):
+                best_solution = local_search_solution
+
+            max_iterations -= int(max_iterations * (I/100))
+            l += 1
+        return best_solution
+
+    #Gerando o Grafo
+    file_path = './'+str(i)+'/result'+str(i)+'.txt'
+    graph = build_graph_from_file(file_path)
 
     #Número de iterações
     max_iterations = 1000
 
-    initialSolution = semi_greedy(100)
+    #Taxa de seleção de candidatos
+    k = 20
 
-    solution = simple_local_search_random_improvement(initialSolution, max_iterations)
+    #Porcentagem de Iterações do algoritmo interno
+    I = 10
+
+    solution = grasp_local_search(max_iterations, I)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")

@@ -1,3 +1,4 @@
+import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
@@ -46,7 +47,7 @@ for i in range(1, 30):
             #enquanto houver candidatos, seleciona o de menor grau para compor o conjunto independente máximo
             while candidates:       
                 #definição da quantidade de candidatos a serem reatribuídos na lista
-                partial_candidates = int(len(candidates) * (k/100) + 1)
+                partial_candidates = int(math.ceil(len(candidates) * (k/100)))
 
                 partial_list = list()
 
@@ -75,10 +76,10 @@ for i in range(1, 30):
         return best_independent_set
 
     #Número de iterações
-    max_iterations = 1
+    max_iterations = 1000
 
     #Porcentagem de candidatos
-    k = 20
+    k = 70
 
     solution = semi_greedy(max_iterations, k)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
