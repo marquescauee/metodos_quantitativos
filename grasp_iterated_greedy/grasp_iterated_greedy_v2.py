@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(5, 30):
+for i in range(1, 30):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
