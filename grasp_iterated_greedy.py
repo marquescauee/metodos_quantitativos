@@ -19,17 +19,18 @@ for i in range(1, 30):
                     graph[vertex2].append(vertex1)
         return graph
 
-    def iterated_greedy(max_iterations, d, k):
+    def semi_greedy(k):
 
-        #variáveis que serão usadas para comparação no final da iteração
         best_independent_set = set()
-        best_independent_size = 0
+        best_independent_size = 0 
 
-        #INICIO DA CONSTRUÇÃO (SEMI-GULOSO)
-        independent_set = set()
         sorted_candidates = sorted(graph.items(), key=lambda x: len(x[1]))
+
         sorted_candidates = dict(sorted_candidates)
+
         candidates = list(sorted_candidates)
+
+        current_independent_set = set()
 
         while candidates:       
             partial_candidates = int(math.ceil(len(candidates) * (k/100)))
@@ -41,17 +42,27 @@ for i in range(1, 30):
 
             chosen_vertice = random.choice(partial_list)
 
-            independent_set.add(chosen_vertice)
+            current_independent_set.add(chosen_vertice)
 
             candidates.remove(chosen_vertice)
-            
+        
             for neighbor in graph[chosen_vertice]:
                 if neighbor in candidates:
-                    candidates.remove(neighbor)  
+                    candidates.remove(neighbor) 
+            
+        independent_size = len(current_independent_set)
+        if independent_size > best_independent_size:
+            best_independent_set =  current_independent_set
+            best_independent_size = independent_size
+        return best_independent_set
 
-        best_independent_set = independent_set
-        best_independent_size = len(independent_set)
-        #FIM DA CONSTRUÇÃO INICIAL
+    def iterated_greedy(semi_greedy_solution, max_iterations, D):
+
+        #variáveis que serão usadas para comparação no final da iteração
+        best_independent_set = set()
+        best_independent_size = 0
+
+        best_independent_set = semi_greedy_solution
 
         #ordenando o grafo do vértice de menor ordem para o de maior
         #forma de ordenação: função lambda recebe um parâmetro x (chave/vértice do dicionário/grafo) e retorna o comprimento do array de valores
@@ -66,11 +77,8 @@ for i in range(1, 30):
         #inicio das iterações
         for _ in range(max_iterations):
 
-            #cópia da lista ordenada de candidatos em forma de lista (necessário para não apontarem para o mesmo endereço de memória)
-            candidates = list(sorted_candidates)
-
             #definição do número de vértices a serem destruídos
-            vertices_to_be_destroyed = int(math.ceil(len(current_independent_set) * (d/100)))
+            vertices_to_be_destroyed = int(math.ceil(len(current_independent_set) * (D/100)))
 
             #convertendo set pra uma lista
             current_independent_set = list(current_independent_set)
@@ -125,15 +133,16 @@ for i in range(1, 30):
 
         while(l < max_iterations):
             
-            iterated_greedy_solution = iterated_greedy(int(max_iterations * (I/100)), D, k)
+            semi_greedy_solution = semi_greedy(k)
                 
             if(l == 0):
-                best_solution = list(iterated_greedy_solution)
+                best_solution = list(semi_greedy_solution)
 
-        
-            if(len(iterated_greedy_solution) > len(best_solution)):
-                best_solution = iterated_greedy_solution
+            solution_iterated_greedy = iterated_greedy(semi_greedy_solution, int(initial_max_iterations * (I/100)), D)
 
+            if(len(solution_iterated_greedy) > len(best_solution)):
+                best_solution = solution_iterated_greedy
+                
             max_iterations -= int(initial_max_iterations * (I/100))
             l += 1
         return best_solution

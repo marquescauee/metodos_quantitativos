@@ -19,9 +19,6 @@ for i in range(1, 30):
                     graph[vertex2].append(vertex1)
         return graph
 
-    file_path = './'+str(i)+'/result'+str(i)+'.txt'
-    graph = build_graph_from_file(file_path)
-
     ############################# SEMI GULOSO ###############################################################################
     def semi_greedy(k):
         best_independent_set = set()
@@ -132,6 +129,10 @@ for i in range(1, 30):
             if(list_of_improvements):
                 best_solution = random.choice(list_of_improvements)
         return best_solution
+
+    #Gerando o Grafo
+    file_path = './'+str(i)+'/result'+str(i)+'.txt'
+    graph = build_graph_from_file(file_path)
 
     #Número de iterações
     max_iterations = 1000

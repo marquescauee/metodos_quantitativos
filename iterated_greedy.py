@@ -19,9 +19,6 @@ for i in range(1, 30):
                     graph[vertex1].append(vertex2)
                     graph[vertex2].append(vertex1)
         return graph
-
-    file_path = './'+str(i)+'/result'+str(i)+'.txt'
-    graph = build_graph_from_file(file_path)
     
 
     def iterated_greedy(max_iterations, d):
@@ -73,9 +70,6 @@ for i in range(1, 30):
         #inicio das iterações
         for _ in range(max_iterations):
 
-            #cópia da lista ordenada de candidatos em forma de lista (necessário para não apontarem para o mesmo endereço de memória)
-            candidates = list(sorted_candidates)
-
             #definição do número de vértices a serem destruídos
             vertices_to_be_destroyed = int(math.ceil(len(current_independent_set) * (d/100)))
 
@@ -123,6 +117,10 @@ for i in range(1, 30):
                 best_independent_set =  current_independent_set
                 best_independent_size = independent_size
         return best_independent_set
+
+    #Gerando o Grafo
+    file_path = './'+str(i)+'/result'+str(i)+'.txt'
+    graph = build_graph_from_file(file_path)
 
     #Número de iterações
     max_iterations = 5000

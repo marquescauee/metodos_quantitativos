@@ -19,7 +19,7 @@ for i in range(1, 30):
                     graph[vertex2].append(vertex1)
         return graph
 
-    def semi_greedy(I, k):
+    def semi_greedy(k):
 
         best_independent_set = set()
         best_independent_size = 0 
@@ -28,39 +28,38 @@ for i in range(1, 30):
 
         sorted_candidates = dict(sorted_candidates)
 
-        for _ in range(I):
+        candidates = list(sorted_candidates)
 
-            candidates = list(sorted_candidates)
+        current_independent_set = set()
 
-            current_independent_set = set()
+        while candidates:       
+            partial_candidates = int(math.ceil(len(candidates) * (k/100)))
 
-            while candidates:       
-                partial_candidates = int(math.ceil(len(candidates) * (k/100)))
+            partial_list = list()
 
-                partial_list = list()
+            for i in range (partial_candidates):
+                partial_list.append(candidates[i])
 
-                for i in range (partial_candidates):
-                   partial_list.append(candidates[i])
+            chosen_vertice = random.choice(partial_list)
 
-                chosen_vertice = random.choice(partial_list)
+            current_independent_set.add(chosen_vertice)
 
-                current_independent_set.add(chosen_vertice)
-
-                candidates.remove(chosen_vertice)
+            candidates.remove(chosen_vertice)
+        
+            for neighbor in graph[chosen_vertice]:
+                if neighbor in candidates:
+                    candidates.remove(neighbor) 
             
-                for neighbor in graph[chosen_vertice]:
-                    if neighbor in candidates:
-                        candidates.remove(neighbor) 
-               
-            independent_size = len(current_independent_set)
-            if independent_size > best_independent_size:
-                best_independent_set =  current_independent_set
-                best_independent_size = independent_size
+        independent_size = len(current_independent_set)
+        if independent_size > best_independent_size:
+            best_independent_set =  current_independent_set
+            best_independent_size = independent_size
         return best_independent_set
     
     def simple_local_search_random_improvement(initialSolution, max_iterations):
         #Solução Atual (Na primeira iteração, a melhor solução é a solução inicial gerada pelo semi-greedy)
         best_solution = list(initialSolution)
+        number_of_iterations_used = 1
 
         for _ in range(max_iterations):
             #Lista de melhorias encontradas
@@ -130,7 +129,10 @@ for i in range(1, 30):
 
             #se houver alguma melhoria existente, pega uma melhoria aleatória
             if(list_of_improvements):
+                number_of_iterations_used += 1
                 best_solution = random.choice(list_of_improvements)
+            else:
+                return [best_solution, number_of_iterations_used] 
         return best_solution
   
     def grasp_simple_local_search(max_iterations, I):
@@ -141,17 +143,17 @@ for i in range(1, 30):
 
         while(l < max_iterations):
             
-            semi_greedy_solution = semi_greedy(int(max_iterations * (I/100)), k)
+            semi_greedy_solution = semi_greedy(k)
                 
             if(l == 0):
                 best_solution = list(semi_greedy_solution)
 
-            local_search_solution = simple_local_search_random_improvement(semi_greedy_solution, int(max_iterations * (I/100)))
+            local_search_solution = simple_local_search_random_improvement(semi_greedy_solution, int(initial_max_iterations * (I/100)))
         
-            if(len(local_search_solution) > len(best_solution)):
-                best_solution = local_search_solution
+            if(len(local_search_solution[0]) > len(best_solution)):
+                best_solution = local_search_solution[0]
 
-            max_iterations -= int(initial_max_iterations * (I/100))
+            max_iterations -= local_search_solution[1]
             l += 1
         return best_solution
 

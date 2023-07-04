@@ -19,9 +19,6 @@ for i in range(1, 30):
                     graph[vertex1].append(vertex2)
                     graph[vertex2].append(vertex1)
         return graph
-
-    file_path = './'+str(i)+'/result'+str(i)+'.txt'
-    graph = build_graph_from_file(file_path)
   
     #Algoritmo Semi-Greedy
     def semi_greedy(iterations, k):
@@ -74,6 +71,10 @@ for i in range(1, 30):
                 best_independent_set =  current_independent_set
                 best_independent_size = independent_size
         return best_independent_set
+
+    #Gerando o Grafo
+    file_path = './'+str(i)+'/result'+str(i)+'.txt'
+    graph = build_graph_from_file(file_path)
 
     #Número de iterações
     max_iterations = 1000
