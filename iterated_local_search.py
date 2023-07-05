@@ -145,6 +145,10 @@ for i in range(1, 27, 2):
                         vertices_added_to_improve_solution.append(candidate)
                         list_of_candidates.remove(candidate)
 
+                        for neighbor in (graph.get(candidate)):
+                            if(neighbor in list_of_candidates):
+                                list_of_candidates.remove(neighbor)
+
                         #se o tamanho da lista de vértices adicionados + o tamanho original da melhor solução for maior que o tamanho da solução original
                         #colocamos o +1 porque a melhor solução sempre tem um elemento removido para tentar inserir outros, logo uma solução inicial de 7 vértices chega neste ponto com somente 6
 
@@ -174,7 +178,7 @@ for i in range(1, 27, 2):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 100
 
     #Taxa de perturbação
     perturbation = 10

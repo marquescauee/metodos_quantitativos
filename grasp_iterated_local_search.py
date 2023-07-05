@@ -196,7 +196,7 @@ for i in range(1, 27):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 8000
+    max_iterations = 2000
 
     #Taxa de seleção de candidatos
     k = 10

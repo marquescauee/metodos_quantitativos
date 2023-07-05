@@ -117,6 +117,10 @@ for i in range(1, 27):
                     if(not is_neighbor):
                         current_independent_set.append(candidate)
                         list_of_candidates.remove(candidate)
+
+                        for neighbor in (graph.get(candidate)):
+                            if(neighbor in list_of_candidates):
+                                list_of_candidates.remove(neighbor)
                 if(candidate in list_of_candidates):
                     list_of_candidates.remove(candidate)
 
@@ -135,7 +139,7 @@ for i in range(1, 27):
     max_iterations = 2000
 
     #taxa de destruição
-    D = 10
+    D = 100
 
     #execução da solução
     solution = iterated_greedy(max_iterations, D)

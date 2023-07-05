@@ -123,6 +123,11 @@ for i in range(1, 27):
                     #se a variável is_neighbor for false, então o candidato não é vizinho de ninguém. Adiciona no conjunto
                     if(not is_neighbor):
                         current_independent_set.append(candidate)
+                        list_of_candidates.remove(candidate)
+
+                        for neighbor in (graph.get(candidate)):
+                            if(neighbor in list_of_candidates):
+                                list_of_candidates.remove(neighbor)
                 if(candidate in list_of_candidates):
                     list_of_candidates.remove(candidate)
 
@@ -172,10 +177,13 @@ for i in range(1, 27):
     D = 10
 
     #Porcentagem de Iterações do algoritmo interno
-    I = 80
+    I = 10
 
-    for i in range(10):
-        solution = grasp_iterated_greedy(max_iterations, I)
-    #print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
-        print(len(solution))
-    print("============================================================")
+    # for i in range(10):
+    #     solution = grasp_iterated_greedy(max_iterations, I)
+    #     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+    #     print(len(solution))
+    # print("============================================================")
+
+    solution = grasp_iterated_greedy(max_iterations, I)
+    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")

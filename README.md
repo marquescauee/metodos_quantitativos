@@ -48,7 +48,7 @@
     - solução encontrada na literatura: 352
 
 - 17: tamanho do maximal independent set para 64 vértices / 264 arestas
-    - solução encontrada na literatura: 20
+    - solução encontrada na literatura: 18
 
 - 18: tamanho do maximal independent set para 128 vértices / 672 arestas
     - solução encontrada na literatura: 28

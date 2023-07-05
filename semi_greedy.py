@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 27):
+for i in range(1, 27, 2):
 
     #Função que gera o grafo
     def build_graph_from_file(file_path):
@@ -26,6 +26,8 @@ for i in range(1, 27):
         #variáveis que serão usadas para comparação no final da iteração
         best_independent_set = set()
         best_independent_size = 0 
+
+        global media
 
         #ordenando o grafo do vértice de menor ordem para o de maior
         #forma de ordenação: função lambda recebe um parâmetro x (chave/vértice do dicionário/grafo) e retorna o comprimento do array de valores
@@ -71,6 +73,7 @@ for i in range(1, 27):
             if independent_size > best_independent_size:
                 best_independent_set =  current_independent_set
                 best_independent_size = independent_size
+            media += len(best_independent_set)
         return best_independent_set
 
     #Gerando o Grafo
@@ -78,10 +81,18 @@ for i in range(1, 27):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 2000
+    max_iterations = 1000
 
     #Porcentagem de candidatos
-    k = 10
+    k = 80
 
-    solution = semi_greedy(max_iterations, k)
-    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+    # solution = semi_greedy(max_iterations, k)
+    # print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+
+    media = 0
+
+    for i in range(10):
+        solution = semi_greedy(max_iterations, k)
+        print(len(solution))
+    print(f"média: {(media / max_iterations) / 10}")
+    print("============================================================")
