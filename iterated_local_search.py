@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30, 2):
+for i in range(1, 27, 2):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -79,13 +79,14 @@ for i in range(1, 30, 2):
             #FASE DE DESTRUIÇÃO
             for _ in range(vertices_to_be_destroyed):
                 #obtendo vértice a ser removido
-                vertice_removed = random.choice(best_solution)
+                if(best_solution):
+                    vertice_removed = random.choice(best_solution)
 
-                #removendo do conjunto independente atual
-                best_solution.remove(vertice_removed)
+                    #removendo do conjunto independente atual
+                    best_solution.remove(vertice_removed)
 
-                #adicionando na lista de removidos
-                vertices_removed.append(vertice_removed)
+                    #adicionando na lista de removidos
+                    vertices_removed.append(vertice_removed)
 
             ############################## FIM DA PERTURBACAO #############################################
 
@@ -166,7 +167,6 @@ for i in range(1, 30, 2):
                 last_best_solution = list(best_solution)
             else:
                 best_solution = list(last_best_solution)
-
         return best_solution
 
     #Gerando o Grafo
@@ -177,9 +177,9 @@ for i in range(1, 30, 2):
     max_iterations = 1000
 
     #Taxa de perturbação
-    perturbation = 20
+    perturbation = 10
 
-    initialSolution = semi_greedy(20)
+    initialSolution = semi_greedy(10)
 
     solution = iterated_local_search(initialSolution, max_iterations, perturbation)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")

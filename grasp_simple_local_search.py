@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 27):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -133,7 +133,7 @@ for i in range(1, 30):
                 best_solution = random.choice(list_of_improvements)
             else:
                 return [best_solution, number_of_iterations_used] 
-        return best_solution
+        return [best_solution, number_of_iterations_used]
   
     def grasp_simple_local_search(max_iterations, I):
 
@@ -149,7 +149,7 @@ for i in range(1, 30):
                 best_solution = list(semi_greedy_solution)
 
             local_search_solution = simple_local_search_random_improvement(semi_greedy_solution, int(initial_max_iterations * (I/100)))
-        
+
             if(len(local_search_solution[0]) > len(best_solution)):
                 best_solution = local_search_solution[0]
 
@@ -162,13 +162,16 @@ for i in range(1, 30):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 100
 
     #Taxa de seleção de candidatos
-    k = 20
+    k = 10
 
     #Porcentagem de Iterações do algoritmo interno
     I = 10
 
-    solution = grasp_simple_local_search(max_iterations, I)
-    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+    for i in range(10):
+        solution = grasp_simple_local_search(max_iterations, I)
+        #print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+        print(len(solution))
+    print("============================================================")

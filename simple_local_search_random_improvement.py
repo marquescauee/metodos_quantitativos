@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 27):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -135,7 +135,7 @@ for i in range(1, 30):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 2000
 
     initialSolution = semi_greedy(100)
 

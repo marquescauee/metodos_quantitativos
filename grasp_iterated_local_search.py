@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 27):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -196,16 +196,18 @@ for i in range(1, 30):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 8000
 
     #Taxa de seleção de candidatos
-    k = 20
+    k = 10
 
     #Taxa de perturbação
-    perturbation = 20
+    perturbation = 10
 
     #Porcentagem de Iterações do algoritmo interno
     I = 10
 
+
     solution = grasp_iterated_local_search(max_iterations, I)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+

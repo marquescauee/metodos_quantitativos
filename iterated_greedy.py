@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 27):
 
     #Função que gera o grafo
     def build_graph_from_file(file_path):
@@ -21,7 +21,7 @@ for i in range(1, 30):
         return graph
     
 
-    def iterated_greedy(max_iterations, d):
+    def iterated_greedy(max_iterations, D):
 
         #variáveis que serão usadas para comparação no final da iteração
         best_independent_set = set()
@@ -33,7 +33,7 @@ for i in range(1, 30):
         sorted_candidates = dict(sorted_candidates)
         candidates = list(sorted_candidates)
 
-        k = 20
+        k = 10
 
         while candidates:       
             partial_candidates = int(math.ceil(len(candidates) * (k/100)))
@@ -71,7 +71,7 @@ for i in range(1, 30):
         for _ in range(max_iterations):
 
             #definição do número de vértices a serem destruídos
-            vertices_to_be_destroyed = int(math.ceil(len(current_independent_set) * (d/100)))
+            vertices_to_be_destroyed = int(math.ceil(len(current_independent_set) * (D/100)))
 
             #convertendo set pra uma lista
             current_independent_set = list(current_independent_set)
@@ -91,7 +91,14 @@ for i in range(1, 30):
             #FASE DE RECONSTRUÇÃO (SEMI-GULOSO)
             while list_of_candidates:
 
-                candidate = random.choice(list_of_candidates)
+                partial_candidates = int(math.ceil(len(list_of_candidates) * (k/100)))
+
+                partial_list = list()
+
+                for i in range (partial_candidates):
+                    partial_list.append(list_of_candidates[i])
+
+                candidate = random.choice(partial_list)
 
                 #booleano pra verificar se o candidato é vizinho de alguém
                 is_neighbor = False
@@ -109,7 +116,9 @@ for i in range(1, 30):
                     #se a variável is_neighbor for false, então o candidato não é vizinho de ninguém. Adiciona no conjunto
                     if(not is_neighbor):
                         current_independent_set.append(candidate)
-                list_of_candidates.remove(candidate)
+                        list_of_candidates.remove(candidate)
+                if(candidate in list_of_candidates):
+                    list_of_candidates.remove(candidate)
 
             #se o tamanho do conjunto independente máximo atual é maior que o melhor encontrado até o momento, substitui
             independent_size = len(current_independent_set)
@@ -123,11 +132,11 @@ for i in range(1, 30):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 5000
+    max_iterations = 2000
 
     #taxa de destruição
-    d = 30
+    D = 10
 
     #execução da solução
-    solution = iterated_greedy(max_iterations, d)
+    solution = iterated_greedy(max_iterations, D)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")

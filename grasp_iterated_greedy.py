@@ -2,7 +2,7 @@ import math
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 27):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -98,7 +98,14 @@ for i in range(1, 30):
             #FASE DE RECONSTRUÇÃO (SEMI-GULOSO)
             while list_of_candidates:
 
-                candidate = random.choice(list_of_candidates)
+                partial_candidates = int(math.ceil(len(list_of_candidates) * (k/100)))
+
+                partial_list = list()
+
+                for i in range (partial_candidates):
+                    partial_list.append(list_of_candidates[i])
+
+                candidate = random.choice(partial_list)
 
                 #booleano pra verificar se o candidato é vizinho de alguém
                 is_neighbor = False
@@ -116,7 +123,8 @@ for i in range(1, 30):
                     #se a variável is_neighbor for false, então o candidato não é vizinho de ninguém. Adiciona no conjunto
                     if(not is_neighbor):
                         current_independent_set.append(candidate)
-                list_of_candidates.remove(candidate)
+                if(candidate in list_of_candidates):
+                    list_of_candidates.remove(candidate)
 
             #se o tamanho do conjunto independente máximo atual é maior que o melhor encontrado até o momento, substitui
             independent_size = len(current_independent_set)
@@ -152,19 +160,22 @@ for i in range(1, 30):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 1000
+    max_iterations = 100
 
     #Taxa de seleção de candidatos
-    k = 20
+    k = 10
 
     #Taxa de perturbação
-    perturbation = 20
+    perturbation = 10
 
     #Taxa de destruição
-    D = 50
+    D = 10
 
     #Porcentagem de Iterações do algoritmo interno
-    I = 10
+    I = 80
 
-    solution = grasp_iterated_greedy(max_iterations, I)
-    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+    for i in range(10):
+        solution = grasp_iterated_greedy(max_iterations, I)
+    #print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+        print(len(solution))
+    print("============================================================")
