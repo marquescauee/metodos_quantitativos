@@ -1,5 +1,6 @@
 import math
 import random
+import time
 
 #Selecionando apenas as instâncias ímpares (step 2)
 for i in range(1, 27):
@@ -56,6 +57,7 @@ for i in range(1, 27):
     ############################# SEMI GULOSO ###############################################################################
   
     def simple_local_search_random_improvement(initialSolution, max_iterations):
+        inicio = time.perf_counter()
         #Solução Atual (Na primeira iteração, a melhor solução é a solução inicial gerada pelo semi-greedy)
         best_solution = list(initialSolution)
 
@@ -128,6 +130,9 @@ for i in range(1, 27):
             #se houver alguma melhoria existente, pega uma melhoria aleatória
             if(list_of_improvements):
                 best_solution = random.choice(list_of_improvements)
+        fim = time.perf_counter()
+        tempo_execucao = fim - inicio
+        print("Tempo de execução:", tempo_execucao, "segundos")
         return best_solution
 
     #Gerando o Grafo
@@ -135,9 +140,13 @@ for i in range(1, 27):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 2000
+    max_iterations = 1000
 
     initialSolution = semi_greedy(100)
 
-    solution = simple_local_search_random_improvement(initialSolution, max_iterations)
-    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
+    print(f"Best Solution for Instance {i}")
+    for i in range(10):
+        solution = simple_local_search_random_improvement(initialSolution, max_iterations)
+        print(len(solution))
+    
+    print("============================================================")

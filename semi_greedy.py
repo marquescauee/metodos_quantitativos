@@ -1,8 +1,9 @@
 import math
 import random
+import time
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 27, 2):
+for i in range(1, 27):
 
     #Função que gera o grafo
     def build_graph_from_file(file_path):
@@ -22,6 +23,7 @@ for i in range(1, 27, 2):
   
     #Algoritmo Semi-Greedy
     def semi_greedy(iterations, k):
+        inicio = time.perf_counter()
 
         #variáveis que serão usadas para comparação no final da iteração
         best_independent_set = set()
@@ -74,7 +76,11 @@ for i in range(1, 27, 2):
                 best_independent_set =  current_independent_set
                 best_independent_size = independent_size
             media += len(best_independent_set)
+        fim = time.perf_counter()
+        tempo_execucao = fim - inicio
+        print("Tempo de execução:", tempo_execucao, "segundos") 
         return best_independent_set
+
 
     #Gerando o Grafo
     file_path = './'+str(i)+'/result'+str(i)+'.txt'
@@ -84,15 +90,16 @@ for i in range(1, 27, 2):
     max_iterations = 1000
 
     #Porcentagem de candidatos
-    k = 80
+    k = 10
 
     # solution = semi_greedy(max_iterations, k)
     # print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
 
     media = 0
-
+    
+    print(f"Best Solution for Instance {i}")
     for i in range(10):
         solution = semi_greedy(max_iterations, k)
         print(len(solution))
-    print(f"média: {(media / max_iterations) / 10}")
+    
     print("============================================================")

@@ -1,5 +1,6 @@
 import math
 import random
+import time
 
 #Selecionando apenas as instâncias ímpares (step 2)
 for i in range(1, 27):
@@ -136,6 +137,7 @@ for i in range(1, 27):
         return [best_solution, number_of_iterations_used]
   
     def grasp_simple_local_search(max_iterations, I):
+        inicio = time.perf_counter()
 
         initial_max_iterations = max_iterations
         best_solution = list()
@@ -155,6 +157,9 @@ for i in range(1, 27):
 
             max_iterations -= local_search_solution[1]
             l += 1
+        fim = time.perf_counter()
+        tempo_execucao = fim - inicio
+        print("Tempo de execução:", tempo_execucao, "segundos")
         return best_solution
 
     #Gerando o Grafo
@@ -162,7 +167,7 @@ for i in range(1, 27):
     graph = build_graph_from_file(file_path)
 
     #Número de iterações
-    max_iterations = 100
+    max_iterations = 1000
 
     #Taxa de seleção de candidatos
     k = 10
@@ -170,8 +175,9 @@ for i in range(1, 27):
     #Porcentagem de Iterações do algoritmo interno
     I = 10
 
+    print(f"Best Solution for Instance {i}")
     for i in range(10):
         solution = grasp_simple_local_search(max_iterations, I)
-        #print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
         print(len(solution))
+    
     print("============================================================")
