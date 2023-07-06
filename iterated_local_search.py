@@ -1,8 +1,6 @@
 import math
 import random
-import time
 
-#Selecionando apenas as instâncias ímpares (step 2)
 for i in range(1, 27):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
@@ -57,7 +55,6 @@ for i in range(1, 27):
     ############################# SEMI GULOSO ###############################################################################
   
     def iterated_local_search(initialSolution, max_iterations, perturbation):
-        inicio = time.perf_counter()
         #Solução Atual (Na primeira iteração, a melhor solução é a solução inicial gerada pelo semi-greedy)
         best_solution = list(initialSolution)
         last_best_solution = list(best_solution)
@@ -173,9 +170,6 @@ for i in range(1, 27):
                 last_best_solution = list(best_solution)
             else:
                 best_solution = list(last_best_solution)
-        fim = time.perf_counter()
-        tempo_execucao = fim - inicio
-        print("Tempo de execução:", tempo_execucao, "segundos")
         return best_solution
 
     #Gerando o Grafo
@@ -190,9 +184,5 @@ for i in range(1, 27):
 
     initialSolution = semi_greedy(100)
 
-    print(f"Best Solution for Instance {i}")
-    for i in range(10):
-        solution = iterated_local_search(initialSolution, max_iterations, perturbation)
-        print(len(solution))
-    
-    print("============================================================")
+    solution = iterated_local_search(initialSolution, max_iterations, perturbation)
+    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")

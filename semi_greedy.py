@@ -1,8 +1,6 @@
 import math
 import random
-import time
 
-#Selecionando apenas as instâncias ímpares (step 2)
 for i in range(1, 27):
 
     #Função que gera o grafo
@@ -23,13 +21,10 @@ for i in range(1, 27):
   
     #Algoritmo Semi-Greedy
     def semi_greedy(iterations, k):
-        inicio = time.perf_counter()
 
         #variáveis que serão usadas para comparação no final da iteração
         best_independent_set = set()
         best_independent_size = 0 
-
-        global media
 
         #ordenando o grafo do vértice de menor ordem para o de maior
         #forma de ordenação: função lambda recebe um parâmetro x (chave/vértice do dicionário/grafo) e retorna o comprimento do array de valores
@@ -75,10 +70,6 @@ for i in range(1, 27):
             if independent_size > best_independent_size:
                 best_independent_set =  current_independent_set
                 best_independent_size = independent_size
-            media += len(best_independent_set)
-        fim = time.perf_counter()
-        tempo_execucao = fim - inicio
-        print("Tempo de execução:", tempo_execucao, "segundos") 
         return best_independent_set
 
 
@@ -92,14 +83,5 @@ for i in range(1, 27):
     #Porcentagem de candidatos
     k = 10
 
-    # solution = semi_greedy(max_iterations, k)
-    # print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
-
-    media = 0
-    
-    print(f"Best Solution for Instance {i}")
-    for i in range(10):
-        solution = semi_greedy(max_iterations, k)
-        print(len(solution))
-    
-    print("============================================================")
+    solution = semi_greedy(max_iterations, k)
+    print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
