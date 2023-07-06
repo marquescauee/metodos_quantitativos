@@ -1,7 +1,7 @@
 import random
 
 #Selecionando apenas as instâncias ímpares (step 2)
-for i in range(1, 30):
+for i in range(1, 27):
     #Função que gera o grafo
     def build_graph_from_file(file_path):
         graph = {}
@@ -50,7 +50,7 @@ for i in range(1, 30):
         return best_set
 
     #Número de iterações
-    max_iterations = 1
+    max_iterations = 1000
 
     solution = greedy(max_iterations)
     print(f"Best Solution for Instance {i} After {max_iterations} iterations: {len(solution)}. Vertices Selected: {solution} \n")
